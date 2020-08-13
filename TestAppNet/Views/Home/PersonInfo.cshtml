@@ -1,0 +1,15 @@
+﻿@model IEnumerable<FindPFRStorageViewModel>
+@{
+    Layout = null;
+}
+<table class="personStorage">
+        <tr><td>ОТ</td><td>ДО</td><td>Сумма</td></tr>
+        @foreach (FindPFRStorageViewModel person in Model)
+        {
+        <tr>
+            <td>@person.FromDate</td>
+            <td>@person.ToDate</td>
+            <td>@person.Sum</td>
+        </tr>
+        }
+    </table>

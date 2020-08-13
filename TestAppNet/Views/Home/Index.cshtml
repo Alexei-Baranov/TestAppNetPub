@@ -1,0 +1,67 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
+}
+@model TestAppNet.Models.FindPersonViewModel
+
+
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new {@id = "PersonForm"}))
+{
+    <p>
+        @Html.LabelFor(person => person.SecondName, "Фамилия")<br />
+        @Html.TextBoxFor(person => person.SecondName)
+        @Html.ValidationMessageFor(person => person.SecondName, "", new { @class = "text-danger" })
+    </p>
+    <p>
+        @Html.LabelFor(person => person.FirstName, "Имя")<br />
+        @Html.TextBoxFor(person => person.FirstName)
+        @Html.ValidationMessageFor(person => person.FirstName, "", new { @class = "text-danger" })
+    </p>
+    <p>
+        @Html.LabelFor(person => person.MiddleName, "Отчество")<br />
+        @Html.TextBoxFor(person => person.MiddleName)
+        @Html.ValidationMessageFor(person => person.MiddleName, "", new { @class = "text-danger" })
+    </p>
+    <p>
+        @Html.LabelFor(person => person.DateOfBirt, "Дата рождения")<br />
+        @Html.TextBoxFor(person => person.DateOfBirt, new {@type = "date"})
+        @Html.ValidationMessageFor(person => person.DateOfBirt, "", new { @class = "text-danger" })
+    </p>
+    <p>
+        @Html.LabelFor(person => person.SNILS, "СНИЛС")<br />
+        @Html.TextBoxFor(person => person.SNILS)
+        @Html.ValidationMessageFor(person => person.SNILS, "", new { @class = "text-danger" })
+    </p>
+
+    <p>
+        <input type="button" value="Отправить" id ="GetPersonBtn" />
+    </p>
+    <p>
+        <input type="reset" value="Очистить" />
+    </p>
+}
+<div id="results"></div>
+
+@section Scripts
+{
+    <script>
+        $(
+            function() {
+                $("#@Html.IdFor(person => person.SNILS)").mask("999-999-999 99");
+                $("#GetPersonBtn").click(() => {
+                    var form = $("#PersonForm");
+                    if (!form.valid())
+                        return;
+                    $.ajax({
+                        url: '@Url.Action("GetPerson")',
+                        data: form.serialize(),
+                        success: function( response ) {
+                            $("#results").html(response);
+                        }
+                    });
+                });
+            });
+
+    </script>
+}
